@@ -1,19 +1,55 @@
 $(document).ready(function () {
 
-  $("#cityBtn").on("click", function(event) {
+  var history = [];
+
+  $("#cityBtn").on("click", function (event) {
     event.preventDefault();
-    var city = $("#city").val();
+    var city = $("#city").val().trim();
     $("#city").val("");
+    if (city !== "") {
+      history.push(city);
+      console.log(history);
+      displayHistory();
+      displayWeather(city);
+    }
+  });
+
+  function displayHistory() {
+    $("#history").empty();
+    for (var i = 0; i < history.length; i++) {
+      var a = $("<button>");
+      a.addClass("btn btn-outline-secondary historyBtn");
+      a.attr("data-city", history[i]);
+      a.text(history[i]);
+      $("#history").prepend(a);
+    }
+  }
+
+  $(document).on("click", ".historyBtn", function (event) {
+    event.preventDefault();
+    var city = $(this).attr("data-city");
+    console.log(city);
+    displayWeather(city);
+  });
+
+  $(document).ajaxError(function() {
+    alert("City not found. Please try another city.");
+    history.pop();
+    console.log(history);
+    displayHistory();
+  });
+
+  function displayWeather(city) {
 
     var APIKey = "2b1d893433779b660bd9ec1ed3d3311b";
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + APIKey;
+    console.log(queryURL);
     
     $.ajax({
       url: queryURL,
       method: "GET"
     }).then(function (response) {
       
-      console.log(queryURL);
       console.log(response);
       var cityName = response.name;
       var date = response.dt;
@@ -34,13 +70,13 @@ $(document).ready(function () {
       console.log(longitude);
       
       var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + APIKey;
+      console.log(queryURL);
       
       $.ajax({
         url: queryURL,
         method: "GET"
       }).then(function (response) {
         
-        console.log(queryURL);
         console.log(response);
         var uvi = response.current.uvi;
         console.log(uvi);
@@ -58,6 +94,6 @@ $(document).ready(function () {
         
       });
     });
-    
-  });
+  }
+
 });
