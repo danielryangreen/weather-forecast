@@ -32,7 +32,7 @@ $(document).ready(function () {
     displayWeather(city);
   });
 
-  $(document).ajaxError(function() {
+  $(document).ajaxError(function () {
     alert("City not found. Please try another city.");
     history.pop();
     console.log(history);
@@ -44,54 +44,68 @@ $(document).ready(function () {
     var APIKey = "2b1d893433779b660bd9ec1ed3d3311b";
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + APIKey;
     console.log(queryURL);
-    
+
     $.ajax({
       url: queryURL,
       method: "GET"
     }).then(function (response) {
-      
+
       console.log(response);
-      var cityName = response.name;
+      $("#current").children("h5").text(response.name + " (" + response.dt + ") " + response.weather[0].icon)
+      .next().text("Temperature: " + response.main.temp.toFixed(1) + " " + String.fromCharCode(8457))
+      .next().text("Humidity: " + response.main.humidity + "%")
+      .next().text("Wind Speed: " + response.wind.speed.toFixed(1) + " MPH");
       var date = response.dt;
-      var icon = response.weather[0].icon;
-      var iconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
-      var temperature = response.main.temp;
-      var humidity = response.main.humidity;
-      var wind = response.wind.speed;
-      var latitude = response.coord.lat;
-      var longitude = response.coord.lon;
-      console.log(cityName);
       console.log(date);
+      var icon = response.weather[0].icon;
       console.log(icon);
-      console.log(temperature);
-      console.log(humidity);
-      console.log(wind);
+      var iconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+      var latitude = response.coord.lat;
       console.log(latitude);
+      var longitude = response.coord.lon;
       console.log(longitude);
-      
+
       var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + APIKey;
       console.log(queryURL);
-      
+
       $.ajax({
         url: queryURL,
         method: "GET"
       }).then(function (response) {
-        
+
         console.log(response);
-        var uvi = response.current.uvi;
-        console.log(uvi);
-        var date = response.daily[1].dt;
-        var icon = response.daily[1].weather[0].icon;
-        var iconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
-        var tempMin = response.daily[1].temp.min;
-        var tempMax = response.daily[1].temp.max;
-        var humidity = response.daily[1].humidity;
-        console.log(date);
-        console.log(icon);
-        console.log(tempMin);
-        console.log(tempMax);
-        console.log(humidity);
-        
+        $("#UVI").text("UVI Index: " + response.current.uvi);
+
+        $("#day1").children("h5").text(response.daily[1].dt)
+        .next().text(response.daily[1].weather[0].icon)
+        .next().text("High Temp: " + response.daily[1].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
+        .next().text("Low Temp: " + response.daily[1].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
+        .next().text("Humidity: " + response.daily[1].humidity + "%");
+
+        $("#day2").children("h5").text(response.daily[2].dt)
+        .next().text(response.daily[2].weather[0].icon)
+        .next().text("High Temp: " + response.daily[2].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
+        .next().text("Low Temp: " + response.daily[2].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
+        .next().text("Humidity: " + response.daily[2].humidity + "%");
+
+        $("#day3").children("h5").text(response.daily[3].dt)
+        .next().text(response.daily[3].weather[0].icon)
+        .next().text("High Temp: " + response.daily[3].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
+        .next().text("Low Temp: " + response.daily[3].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
+        .next().text("Humidity: " + response.daily[3].humidity + "%");
+
+        $("#day4").children("h5").text(response.daily[4].dt)
+        .next().text(response.daily[4].weather[0].icon)
+        .next().text("High Temp: " + response.daily[4].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
+        .next().text("Low Temp: " + response.daily[4].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
+        .next().text("Humidity: " + response.daily[4].humidity + "%");
+
+        $("#day5").children("h5").text(response.daily[5].dt)
+        .next().text(response.daily[5].weather[0].icon)
+        .next().text("High Temp: " + response.daily[5].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
+        .next().text("Low Temp: " + response.daily[5].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
+        .next().text("Humidity: " + response.daily[5].humidity + "%");
+
       });
     });
   }
