@@ -67,8 +67,8 @@ $(document).ready(function () {
       url: queryURL,
       method: "GET"
     }).then(function (response) {
-
       console.log(response);
+
       $("#current").children("h5").text(response.name + " (" + response.dt + ") " + response.weather[0].icon)
       .next().text("Temperature: " + response.main.temp.toFixed(1) + " " + String.fromCharCode(8457))
       .next().text("Humidity: " + response.main.humidity + "%")
@@ -91,9 +91,29 @@ $(document).ready(function () {
         url: queryURL,
         method: "GET"
       }).then(function (response) {
-
         console.log(response);
-        $("#UVI").text("UVI Index: " + response.current.uvi);
+
+        // Add color for UVI
+        var UVI = response.current.uvi;
+        // var UVI = 10.1;
+        var color = $("<span>");
+        if (UVI <= 2) {
+          color.addClass("green");
+        }
+        else if (UVI <= 5) {
+          color.addClass("yellow");
+        }
+        else if (UVI <= 7) {
+          color.addClass("orange");
+        }
+        else if (UVI <= 10) {
+          color.addClass("red");
+        }
+        else {
+          color.addClass("purple");
+        }
+        color.text(UVI);
+        $("#UVI").text("UV Index: ").append(color);
 
         $("#day1").children("h5").text(response.daily[1].dt)
         .next().text(response.daily[1].weather[0].icon)

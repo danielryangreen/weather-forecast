@@ -1,1 +1,37 @@
-/* All styling from Bootstrap */
+/* Classes for UV Index Scale from US EPA*/
+
+/* UVI = 0 to 2 */
+.green {
+  background-color: green;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+}
+/* UVI = 3 to 5 */
+.yellow {
+  background-color: yellow;
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+}
+/* UVI = 6 to 7 */
+.orange {
+  background-color: orange;
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+}
+/* UVI = 8 to 10 */
+.red {
+  background-color: red;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+}
+/* UVI = 11+ */
+.purple {
+  background-color: purple;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+}
