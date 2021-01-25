@@ -1,7 +1,16 @@
 $(document).ready(function () {
 
+  var lastCity = localStorage.getItem("lastCity");
+  console.log("Last city: " + lastCity);
   var history = [];
-
+  if (lastCity !== null) {
+    history.push(lastCity);
+    console.log(history);
+    localStorage.setItem("lastCity", history[history.length - 1]);
+    displayHistory();
+    displayWeather(lastCity);
+  }
+  
   $("#cityBtn").on("click", function (event) {
     event.preventDefault();
     var city = $("#city").val().trim();
@@ -9,11 +18,27 @@ $(document).ready(function () {
     if (city !== "") {
       history.push(city);
       console.log(history);
+      localStorage.setItem("lastCity", history[history.length - 1]);
       displayHistory();
       displayWeather(city);
     }
   });
-
+  
+  $(document).on("click", ".historyBtn", function (event) {
+    event.preventDefault();
+    var city = $(this).attr("data-city");
+    console.log(city);
+    displayWeather(city);
+  });
+  
+  $(document).ajaxError(function () {
+    alert("City not found. Please try another city.");
+    history.pop();
+    console.log(history);
+    localStorage.setItem("lastCity", history[history.length - 1]);
+    displayHistory();
+  });
+  
   function displayHistory() {
     $("#history").empty();
     for (var i = 0; i < history.length; i++) {
@@ -24,21 +49,7 @@ $(document).ready(function () {
       $("#history").prepend(a);
     }
   }
-
-  $(document).on("click", ".historyBtn", function (event) {
-    event.preventDefault();
-    var city = $(this).attr("data-city");
-    console.log(city);
-    displayWeather(city);
-  });
-
-  $(document).ajaxError(function () {
-    alert("City not found. Please try another city.");
-    history.pop();
-    console.log(history);
-    displayHistory();
-  });
-
+  
   function displayWeather(city) {
 
     var APIKey = "2b1d893433779b660bd9ec1ed3d3311b";
@@ -56,14 +67,14 @@ $(document).ready(function () {
       .next().text("Humidity: " + response.main.humidity + "%")
       .next().text("Wind Speed: " + response.wind.speed.toFixed(1) + " MPH");
       var date = response.dt;
-      console.log(date);
+      console.log("Date: " + date);
       var icon = response.weather[0].icon;
-      console.log(icon);
+      console.log("Icon: " + icon);
       var iconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
       var latitude = response.coord.lat;
-      console.log(latitude);
+      console.log("Lat: " + latitude);
       var longitude = response.coord.lon;
-      console.log(longitude);
+      console.log("Long: " + longitude);
 
       var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + APIKey;
       console.log(queryURL);
