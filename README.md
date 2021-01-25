@@ -17,10 +17,9 @@ Here is a mock-up that demonstrates the application functionality.
 The following resources were used in this project:
 
 - [Bootstrap](https://getbootstrap.com/)
-<!-- - [Font Awesome](https://fontawesome.com/) -->
-<!-- - [Google Fonts](https://fonts.google.com/) -->
+- [Font Awesome](https://fontawesome.com/)
 - [jQuery](https://jquery.com/)
-<!-- - [Moment.js](https://momentjs.com/) -->
+- [Moment.js](https://momentjs.com/)
 
 The mock-up image was provided by [Trilogy Education Services](https://trilogyed.com/)
 ## License

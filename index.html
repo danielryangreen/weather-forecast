@@ -10,6 +10,10 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
   <!-- My CSS -->
   <link rel="stylesheet" href="style.css">
   <title>Weather Dashboard</title>
@@ -31,7 +35,9 @@
           <div class="input-group mb-3">
             <input type="text" class="form-control" id="city" placeholder="City" aria-label="City"
               aria-describedby="cityBtn">
-            <button class="btn btn-primary" type="submit" id="cityBtn">Search</button>
+            <button class="btn btn-primary" type="submit" id="cityBtn" aria-label="Search">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
           </div>
         </form>
         <div class="btn-group-vertical w-100 bg-white" id="history" role="group" aria-label="Previous Cities">
@@ -130,6 +136,9 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"
     integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous">
     </script>
+
+  <!-- Moment.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
   <!-- My JS -->
   <script src="script.js"></script>
