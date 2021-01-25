@@ -1,16 +1,18 @@
 $(document).ready(function () {
 
+  // Get last search from local storage and initialize empty array for search history
   var lastCity = localStorage.getItem("lastCity");
   console.log("Last city: " + lastCity);
   var history = [];
+  // Add last search to search history, display search history, and display weather for last search
   if (lastCity !== null) {
     history.push(lastCity);
     console.log(history);
-    localStorage.setItem("lastCity", history[history.length - 1]);
     displayHistory();
     displayWeather(lastCity);
   }
   
+  // Get city from input form, add to search history, and reset last search in local storage
   $("#cityBtn").on("click", function (event) {
     event.preventDefault();
     var city = $("#city").val().trim();
@@ -24,6 +26,7 @@ $(document).ready(function () {
     }
   });
   
+  // Get city from search history button and re-display weather for that city
   $(document).on("click", ".historyBtn", function (event) {
     event.preventDefault();
     var city = $(this).attr("data-city");
@@ -31,6 +34,7 @@ $(document).ready(function () {
     displayWeather(city);
   });
   
+  // If API returns 404 error, alert user, remove last search from history, and reset local storage to previous search
   $(document).ajaxError(function () {
     alert("City not found. Please try another city.");
     history.pop();
@@ -39,6 +43,7 @@ $(document).ready(function () {
     displayHistory();
   });
   
+  // Create and display buttons from search history
   function displayHistory() {
     $("#history").empty();
     for (var i = 0; i < history.length; i++) {
@@ -50,12 +55,14 @@ $(document).ready(function () {
     }
   }
   
+  // Get weather from API and write data to elements in page
   function displayWeather(city) {
 
     var APIKey = "2b1d893433779b660bd9ec1ed3d3311b";
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + APIKey;
     console.log(queryURL);
 
+    // Call first API with city to get current weather
     $.ajax({
       url: queryURL,
       method: "GET"
@@ -79,6 +86,7 @@ $(document).ready(function () {
       var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + APIKey;
       console.log(queryURL);
 
+      // Call second API with latlong to get UVI and 5-day forecast
       $.ajax({
         url: queryURL,
         method: "GET"
