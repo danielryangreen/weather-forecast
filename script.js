@@ -11,7 +11,7 @@ $(document).ready(function () {
     displayHistory();
     displayWeather(lastCity);
   }
-  
+
   // Get city from input form, add to search history, and reset last search in local storage
   $("#cityBtn").on("click", function (event) {
     event.preventDefault();
@@ -25,7 +25,7 @@ $(document).ready(function () {
       displayWeather(city);
     }
   });
-  
+
   // Get city from search history button and re-display weather for that city
   $(document).on("click", ".historyBtn", function (event) {
     event.preventDefault();
@@ -33,7 +33,7 @@ $(document).ready(function () {
     console.log(city);
     displayWeather(city);
   });
-  
+
   // If API returns 404 error, alert user, remove last search from history, and reset local storage to previous search
   $(document).ajaxError(function () {
     alert("City not found. Please try another city.");
@@ -42,7 +42,7 @@ $(document).ready(function () {
     localStorage.setItem("lastCity", history[history.length - 1]);
     displayHistory();
   });
-  
+
   // Create and display buttons from search history
   function displayHistory() {
     $("#history").empty();
@@ -54,7 +54,7 @@ $(document).ready(function () {
       $("#history").prepend(a);
     }
   }
-  
+
   // Get weather from API and write data to elements in page
   function displayWeather(city) {
 
@@ -69,12 +69,18 @@ $(document).ready(function () {
     }).then(function (response) {
       console.log(response);
 
-      $("#current").children("h5").text(response.name + " (" + response.dt + ") " + response.weather[0].icon)
-      .next().text("Temperature: " + response.main.temp.toFixed(1) + " " + String.fromCharCode(8457))
-      .next().text("Humidity: " + response.main.humidity + "%")
-      .next().text("Wind Speed: " + response.wind.speed.toFixed(1) + " MPH");
-      var date = response.dt;
+      // Convert time of weather report to city's local time
+      var unixTimestamp = moment.unix(response.dt + response.timezone).utc();
+      var date = unixTimestamp.format("dddd, MMMM D, YYYY h:mm A");
+      console.log(response.dt);
+      console.log(unixTimestamp);
       console.log("Date: " + date);
+
+      $("#current").children("h5").text(response.name + " (" + date + ") " + response.weather[0].icon)
+        .next().text("Temperature: " + response.main.temp.toFixed(1) + " " + String.fromCharCode(8457))
+        .next().text("Humidity: " + response.main.humidity + "%")
+        .next().text("Wind Speed: " + response.wind.speed.toFixed(1) + " MPH");
+
       var icon = response.weather[0].icon;
       console.log("Icon: " + icon);
       var iconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
@@ -94,7 +100,7 @@ $(document).ready(function () {
         console.log(response);
 
         // Add color for UVI
-        var UVI = response.current.uvi;
+        var UVI = response.current.uvi.toFixed(2);
         // var UVI = 10.1;
         var color = $("<span>");
         if (UVI <= 2) {
@@ -115,35 +121,35 @@ $(document).ready(function () {
         color.text(UVI);
         $("#UVI").text("UV Index: ").append(color);
 
-        $("#day1").children("h5").text(response.daily[1].dt)
-        .next().text(response.daily[1].weather[0].icon)
-        .next().text("High Temp: " + response.daily[1].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
-        .next().text("Low Temp: " + response.daily[1].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
-        .next().text("Humidity: " + response.daily[1].humidity + "%");
+        $("#day1").children("h5").text(moment.unix(response.daily[1].dt + response.timezone_offset).utc().format("ddd, M/D"))
+          .next().text(response.daily[1].weather[0].icon)
+          .next().text("High Temp: " + response.daily[1].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
+          .next().text("Low Temp: " + response.daily[1].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
+          .next().text("Humidity: " + response.daily[1].humidity + "%");
 
-        $("#day2").children("h5").text(response.daily[2].dt)
-        .next().text(response.daily[2].weather[0].icon)
-        .next().text("High Temp: " + response.daily[2].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
-        .next().text("Low Temp: " + response.daily[2].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
-        .next().text("Humidity: " + response.daily[2].humidity + "%");
+        $("#day2").children("h5").text(moment.unix(response.daily[2].dt + response.timezone_offset).utc().format("ddd, M/D"))
+          .next().text(response.daily[2].weather[0].icon)
+          .next().text("High Temp: " + response.daily[2].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
+          .next().text("Low Temp: " + response.daily[2].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
+          .next().text("Humidity: " + response.daily[2].humidity + "%");
 
-        $("#day3").children("h5").text(response.daily[3].dt)
-        .next().text(response.daily[3].weather[0].icon)
-        .next().text("High Temp: " + response.daily[3].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
-        .next().text("Low Temp: " + response.daily[3].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
-        .next().text("Humidity: " + response.daily[3].humidity + "%");
+        $("#day3").children("h5").text(moment.unix(response.daily[3].dt + response.timezone_offset).utc().format("ddd, M/D"))
+          .next().text(response.daily[3].weather[0].icon)
+          .next().text("High Temp: " + response.daily[3].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
+          .next().text("Low Temp: " + response.daily[3].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
+          .next().text("Humidity: " + response.daily[3].humidity + "%");
 
-        $("#day4").children("h5").text(response.daily[4].dt)
-        .next().text(response.daily[4].weather[0].icon)
-        .next().text("High Temp: " + response.daily[4].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
-        .next().text("Low Temp: " + response.daily[4].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
-        .next().text("Humidity: " + response.daily[4].humidity + "%");
+        $("#day4").children("h5").text(moment.unix(response.daily[4].dt + response.timezone_offset).utc().format("ddd, M/D"))
+          .next().text(response.daily[4].weather[0].icon)
+          .next().text("High Temp: " + response.daily[4].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
+          .next().text("Low Temp: " + response.daily[4].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
+          .next().text("Humidity: " + response.daily[4].humidity + "%");
 
-        $("#day5").children("h5").text(response.daily[5].dt)
-        .next().text(response.daily[5].weather[0].icon)
-        .next().text("High Temp: " + response.daily[5].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
-        .next().text("Low Temp: " + response.daily[5].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
-        .next().text("Humidity: " + response.daily[5].humidity + "%");
+        $("#day5").children("h5").text(moment.unix(response.daily[5].dt + response.timezone_offset).utc().format("ddd, M/D"))
+          .next().text(response.daily[5].weather[0].icon)
+          .next().text("High Temp: " + response.daily[5].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
+          .next().text("Low Temp: " + response.daily[5].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
+          .next().text("Humidity: " + response.daily[5].humidity + "%");
 
       });
     });

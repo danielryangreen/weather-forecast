@@ -21,7 +21,7 @@ The following resources were used in this project:
 - [jQuery](https://jquery.com/)
 - [Moment.js](https://momentjs.com/)
 
-The UV Index Scale was obtained from the [EPA](https://www.epa.gov/sunsafety/uv-index-scale-0)
+The UV Index Scale was obtained from the [US EPA](https://www.epa.gov/sunsafety/uv-index-scale-0)
 
 The mock-up image was provided by [Trilogy Education Services](https://trilogyed.com/)
 ## License
