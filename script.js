@@ -76,14 +76,18 @@ $(document).ready(function () {
       console.log(unixTimestamp);
       console.log("Date: " + date);
 
-      $("#current").children("h5").text(response.name + " (" + date + ") " + response.weather[0].icon)
+      // Create URL for weather icon
+      var icon = response.weather[0].icon;
+      console.log("Icon: " + icon);
+      var iconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+      var image = $("<img>");
+      image.attr("src", iconURL);
+
+      $("#current").children("h5").text(response.name + " (" + date + ")").append(image)
         .next().text("Temperature: " + response.main.temp.toFixed(1) + " " + String.fromCharCode(8457))
         .next().text("Humidity: " + response.main.humidity + "%")
         .next().text("Wind Speed: " + response.wind.speed.toFixed(1) + " MPH");
 
-      var icon = response.weather[0].icon;
-      console.log("Icon: " + icon);
-      var iconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
       var latitude = response.coord.lat;
       console.log("Lat: " + latitude);
       var longitude = response.coord.lon;
@@ -122,31 +126,31 @@ $(document).ready(function () {
         $("#UVI").text("UV Index: ").append(color);
 
         $("#day1").children("h5").text(moment.unix(response.daily[1].dt + response.timezone_offset).utc().format("ddd, M/D"))
-          .next().text(response.daily[1].weather[0].icon)
+          .append($("<img>").attr("src", "http://openweathermap.org/img/wn/" + response.daily[1].weather[0].icon + "@2x.png"))
           .next().text("High Temp: " + response.daily[1].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
           .next().text("Low Temp: " + response.daily[1].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
           .next().text("Humidity: " + response.daily[1].humidity + "%");
 
         $("#day2").children("h5").text(moment.unix(response.daily[2].dt + response.timezone_offset).utc().format("ddd, M/D"))
-          .next().text(response.daily[2].weather[0].icon)
+          .append($("<img>").attr("src", "http://openweathermap.org/img/wn/" + response.daily[2].weather[0].icon + "@2x.png"))
           .next().text("High Temp: " + response.daily[2].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
           .next().text("Low Temp: " + response.daily[2].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
           .next().text("Humidity: " + response.daily[2].humidity + "%");
 
         $("#day3").children("h5").text(moment.unix(response.daily[3].dt + response.timezone_offset).utc().format("ddd, M/D"))
-          .next().text(response.daily[3].weather[0].icon)
+          .append($("<img>").attr("src", "http://openweathermap.org/img/wn/" + response.daily[3].weather[0].icon + "@2x.png"))
           .next().text("High Temp: " + response.daily[3].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
           .next().text("Low Temp: " + response.daily[3].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
           .next().text("Humidity: " + response.daily[3].humidity + "%");
 
         $("#day4").children("h5").text(moment.unix(response.daily[4].dt + response.timezone_offset).utc().format("ddd, M/D"))
-          .next().text(response.daily[4].weather[0].icon)
+          .append($("<img>").attr("src", "http://openweathermap.org/img/wn/" + response.daily[4].weather[0].icon + "@2x.png"))
           .next().text("High Temp: " + response.daily[4].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
           .next().text("Low Temp: " + response.daily[4].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
           .next().text("Humidity: " + response.daily[4].humidity + "%");
 
         $("#day5").children("h5").text(moment.unix(response.daily[5].dt + response.timezone_offset).utc().format("ddd, M/D"))
-          .next().text(response.daily[5].weather[0].icon)
+          .append($("<img>").attr("src", "http://openweathermap.org/img/wn/" + response.daily[5].weather[0].icon + "@2x.png"))
           .next().text("High Temp: " + response.daily[5].temp.max.toFixed(1) + " " + String.fromCharCode(8457))
           .next().text("Low Temp: " + response.daily[5].temp.min.toFixed(1) + " " + String.fromCharCode(8457))
           .next().text("Humidity: " + response.daily[5].humidity + "%");
